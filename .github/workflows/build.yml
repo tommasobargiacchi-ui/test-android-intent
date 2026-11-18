@@ -10,26 +10,20 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout del codice
+      - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Imposta JDK 17
+      - name: Set up Java
         uses: actions/setup-java@v5
         with:
           distribution: 'temurin'
-          java-version: '17'
+          java-version: '21'
 
-      - name: Configura la cache di Gradle
-        uses: gradle/actions/setup-gradle@v3
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v6
 
-      - name: Rendi eseguibile il gradlew
-        run: chmod +x gradlew
-
-      - name: Compila il Debug APK con Gradle
-        run: ./gradlew assembleDebug
-
-      - name: Carica l'APK tra gli Artifacts di GitHub
-        uses: actions/upload-artifact@v4
+      - name: Build with Gradle Wrapper
+        run: ./gradlew build
         with:
           name: app-debug
           path: app/build/outputs/apk/debug/app-debug.apk
